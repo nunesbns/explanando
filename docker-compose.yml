@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  mariadb:
+    image: bitnami/mariadb:10.6
+    ports:
+      - '3307:3306'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_DATABASE=explanando
+  web:
+    image:  bitnami/laravel:9.1.2
+    container_name: explanando
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_DATABASE=explanando
+    volumes:
+      - './src:/app'
+    depends_on:
+      - mariadb
